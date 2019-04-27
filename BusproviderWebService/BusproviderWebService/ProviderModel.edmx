@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ProvidersWS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BusDetails">
+          <Key>
+            <PropertyRef Name="BusId" />
+          </Key>
+          <Property Name="BusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Capacity" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BusNo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BusProviderDetails">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+            <PropertyRef Name="BusId" />
+          </Key>
+          <Property Name="ProviderId" Type="int" Nullable="false" />
+          <Property Name="BusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProviderDetails">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="ProviderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrganisationName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ContactNo" Type="char" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SeatBookingStatus">
+          <Key>
+            <PropertyRef Name="BusId" />
+            <PropertyRef Name="SeatNo" />
+          </Key>
+          <Property Name="BusId" Type="int" Nullable="false" />
+          <Property Name="SeatNo" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SeatType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_BusProviderDetails_BusDetails">
+          <End Role="BusDetails" Type="Self.BusDetails" Multiplicity="1" />
+          <End Role="BusProviderDetails" Type="Self.BusProviderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusDetails">
+              <PropertyRef Name="BusId" />
+            </Principal>
+            <Dependent Role="BusProviderDetails">
+              <PropertyRef Name="BusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BusProviderDetails_ProviderDetails">
+          <End Role="ProviderDetails" Type="Self.ProviderDetails" Multiplicity="1" />
+          <End Role="BusProviderDetails" Type="Self.BusProviderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProviderDetails">
+              <PropertyRef Name="ProviderId" />
+            </Principal>
+            <Dependent Role="BusProviderDetails">
+              <PropertyRef Name="ProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeatBookingStatus_BusDetails">
+          <End Role="BusDetails" Type="Self.BusDetails" Multiplicity="1" />
+          <End Role="SeatBookingStatus" Type="Self.SeatBookingStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusDetails">
+              <PropertyRef Name="BusId" />
+            </Principal>
+            <Dependent Role="SeatBookingStatus">
+              <PropertyRef Name="BusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DeleteBusRecord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="busNo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="GetProviderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="InsertBusDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="busNo" Type="varchar" Mode="In" />
+          <Parameter Name="busname" Type="varchar" Mode="In" />
+          <Parameter Name="capacity" Type="int" Mode="In" />
+          <Parameter Name="type" Type="varchar" Mode="In" />
+          <Parameter Name="providerId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ProvidersWS_DBModelStoreContainer">
+          <EntitySet Name="BusDetails" EntityType="Self.BusDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BusProviderDetails" EntityType="Self.BusProviderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProviderDetails" EntityType="Self.ProviderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SeatBookingStatus" EntityType="Self.SeatBookingStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BusProviderDetails_BusDetails" Association="Self.FK_BusProviderDetails_BusDetails">
+            <End Role="BusDetails" EntitySet="BusDetails" />
+            <End Role="BusProviderDetails" EntitySet="BusProviderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BusProviderDetails_ProviderDetails" Association="Self.FK_BusProviderDetails_ProviderDetails">
+            <End Role="ProviderDetails" EntitySet="ProviderDetails" />
+            <End Role="BusProviderDetails" EntitySet="BusProviderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeatBookingStatus_BusDetails" Association="Self.FK_SeatBookingStatus_BusDetails">
+            <End Role="BusDetails" EntitySet="BusDetails" />
+            <End Role="SeatBookingStatus" EntitySet="SeatBookingStatus" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProvidersWS_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BusDetail">
+          <Key>
+            <PropertyRef Name="BusId" />
+          </Key>
+          <Property Name="BusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BusNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="SeatBookingStatus" Relationship="Self.FK_SeatBookingStatus_BusDetails" FromRole="BusDetails" ToRole="SeatBookingStatus" />
+          <NavigationProperty Name="ProviderDetails" Relationship="Self.BusProviderDetails" FromRole="BusDetails" ToRole="ProviderDetails" />
+        </EntityType>
+        <EntityType Name="ProviderDetail">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="ProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrganisationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ContactNo" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BusDetails" Relationship="Self.BusProviderDetails" FromRole="ProviderDetails" ToRole="BusDetails" />
+        </EntityType>
+        <EntityType Name="SeatBookingStatu">
+          <Key>
+            <PropertyRef Name="BusId" />
+            <PropertyRef Name="SeatNo" />
+          </Key>
+          <Property Name="BusId" Type="Int32" Nullable="false" />
+          <Property Name="SeatNo" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SeatType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BusDetail" Relationship="Self.FK_SeatBookingStatus_BusDetails" FromRole="SeatBookingStatus" ToRole="BusDetails" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_SeatBookingStatus_BusDetails">
+          <End Role="BusDetails" Type="Self.BusDetail" Multiplicity="1" />
+          <End Role="SeatBookingStatus" Type="Self.SeatBookingStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusDetails">
+              <PropertyRef Name="BusId" />
+            </Principal>
+            <Dependent Role="SeatBookingStatus">
+              <PropertyRef Name="BusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BusProviderDetails">
+          <End Role="BusDetails" Type="Self.BusDetail" Multiplicity="*" />
+          <End Role="ProviderDetails" Type="Self.ProviderDetail" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ProvidersWS_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BusDetails" EntityType="Self.BusDetail" />
+          <EntitySet Name="ProviderDetails" EntityType="Self.ProviderDetail" />
+          <EntitySet Name="SeatBookingStatus" EntityType="Self.SeatBookingStatu" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_SeatBookingStatus_BusDetails" Association="Self.FK_SeatBookingStatus_BusDetails">
+            <End Role="BusDetails" EntitySet="BusDetails" />
+            <End Role="SeatBookingStatus" EntitySet="SeatBookingStatus" />
+          </AssociationSet>
+          <AssociationSet Name="BusProviderDetails" Association="Self.BusProviderDetails">
+            <End Role="BusDetails" EntitySet="BusDetails" />
+            <End Role="ProviderDetails" EntitySet="ProviderDetails" />
+          </AssociationSet>
+          <FunctionImport Name="GetProviderDetails" ReturnType="Collection(ProvidersWS_DBModel.GetProviderDetails_Result)" />
+          <FunctionImport Name="InsertBusDetails">
+            <Parameter Name="busNo" Mode="In" Type="String" />
+            <Parameter Name="busname" Mode="In" Type="String" />
+            <Parameter Name="capacity" Mode="In" Type="Int32" />
+            <Parameter Name="type" Mode="In" Type="String" />
+            <Parameter Name="providerId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteBusRecord">
+            <Parameter Name="busNo" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetProviderDetails_Result">
+          <Property Type="Int32" Name="ProviderId" Nullable="false" />
+          <Property Type="String" Name="OrganisationName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="10" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProvidersWS_DBModelStoreContainer" CdmEntityContainer="ProvidersWS_DBEntities">
+          <EntitySetMapping Name="BusDetails">
+            <EntityTypeMapping TypeName="ProvidersWS_DBModel.BusDetail">
+              <MappingFragment StoreEntitySet="BusDetails">
+                <ScalarProperty Name="BusId" ColumnName="BusId" />
+                <ScalarProperty Name="BusName" ColumnName="BusName" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BusNo" ColumnName="BusNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProviderDetails">
+            <EntityTypeMapping TypeName="ProvidersWS_DBModel.ProviderDetail">
+              <MappingFragment StoreEntitySet="ProviderDetails">
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="OrganisationName" ColumnName="OrganisationName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SeatBookingStatus">
+            <EntityTypeMapping TypeName="ProvidersWS_DBModel.SeatBookingStatu">
+              <MappingFragment StoreEntitySet="SeatBookingStatus">
+                <ScalarProperty Name="BusId" ColumnName="BusId" />
+                <ScalarProperty Name="SeatNo" ColumnName="SeatNo" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="SeatType" ColumnName="SeatType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ProvidersWS_DBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="BusProviderDetails" TypeName="ProvidersWS_DBModel.BusProviderDetails" StoreEntitySet="BusProviderDetails">
+            <EndProperty Name="BusDetails">
+              <ScalarProperty Name="BusId" ColumnName="BusId" />
+            </EndProperty>
+            <EndProperty Name="ProviderDetails">
+              <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetProviderDetails" FunctionName="ProvidersWS_DBModel.Store.GetProviderDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetProviderDetails_Result">
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="OrganisationName" ColumnName="OrganisationName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertBusDetails" FunctionName="ProvidersWS_DBModel.Store.InsertBusDetails" />
+          <FunctionImportMapping FunctionImportName="DeleteBusRecord" FunctionName="ProvidersWS_DBModel.Store.DeleteBusRecord" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
