@@ -70,5 +70,49 @@ namespace BusproviderWebService
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteBusRecord", busNoParameter);
         }
+    
+        public virtual int BookSeat(Nullable<int> seatNo, Nullable<int> busId, string status)
+        {
+            var seatNoParameter = seatNo.HasValue ?
+                new ObjectParameter("seatNo", seatNo) :
+                new ObjectParameter("seatNo", typeof(int));
+    
+            var busIdParameter = busId.HasValue ?
+                new ObjectParameter("busId", busId) :
+                new ObjectParameter("busId", typeof(int));
+    
+            var statusParameter = status != null ?
+                new ObjectParameter("status", status) :
+                new ObjectParameter("status", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("BookSeat", seatNoParameter, busIdParameter, statusParameter);
+        }
+    
+        public virtual int ChangeSeatType(Nullable<int> seatNo, Nullable<int> busId, string seatType)
+        {
+            var seatNoParameter = seatNo.HasValue ?
+                new ObjectParameter("seatNo", seatNo) :
+                new ObjectParameter("seatNo", typeof(int));
+    
+            var busIdParameter = busId.HasValue ?
+                new ObjectParameter("busId", busId) :
+                new ObjectParameter("busId", typeof(int));
+    
+            var seatTypeParameter = seatType != null ?
+                new ObjectParameter("seatType", seatType) :
+                new ObjectParameter("seatType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeSeatType", seatNoParameter, busIdParameter, seatTypeParameter);
+        }
+    
+        public virtual ObjectResult<GetBusDetails_Result> GetBusDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBusDetails_Result>("GetBusDetails");
+        }
+    
+        public virtual ObjectResult<GetBusProviderDetails_Result> GetBusProviderDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBusProviderDetails_Result>("GetBusProviderDetails");
+        }
     }
 }

@@ -87,10 +87,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="BookSeat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="seatNo" Type="int" Mode="In" />
+          <Parameter Name="busId" Type="int" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="ChangeSeatType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="seatNo" Type="int" Mode="In" />
+          <Parameter Name="busId" Type="int" Mode="In" />
+          <Parameter Name="seatType" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="DeleteBusRecord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="busNo" Type="varchar" Mode="In" />
         </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="GetBusDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetBusProviderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetProviderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="InsertBusDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="busNo" Type="varchar" Mode="In" />
@@ -202,10 +214,39 @@
             <Parameter Name="providerId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusRecord">
-            <Parameter Name="busNo" Mode="In" Type="String" />
+          <Parameter Name="busNo" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="BookSeat">
+            <Parameter Name="seatNo" Mode="In" Type="Int32" />
+            <Parameter Name="busId" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ChangeSeatType">
+            <Parameter Name="seatNo" Mode="In" Type="Int32" />
+            <Parameter Name="busId" Mode="In" Type="Int32" />
+            <Parameter Name="seatType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetBusDetails" ReturnType="Collection(ProvidersWS_DBModel.GetBusDetails_Result)" />
+          <FunctionImport Name="GetBusProviderDetails" ReturnType="Collection(ProvidersWS_DBModel.GetBusProviderDetails_Result)" />
         </EntityContainer>
         <ComplexType Name="GetProviderDetails_Result">
+          <Property Type="Int32" Name="ProviderId" Nullable="false" />
+          <Property Type="String" Name="OrganisationName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="GetBusDetails_Result">
+          <Property Type="Int32" Name="BusId" Nullable="false" />
+          <Property Type="String" Name="BusName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Capacity" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="BusNo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetBusProviderDetails_Result">
+          <Property Type="Int32" Name="BusId" Nullable="false" />
+          <Property Type="String" Name="BusName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Capacity" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="BusNo" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="ProviderId" Nullable="false" />
           <Property Type="String" Name="OrganisationName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="10" />
@@ -276,6 +317,33 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="InsertBusDetails" FunctionName="ProvidersWS_DBModel.Store.InsertBusDetails" />
           <FunctionImportMapping FunctionImportName="DeleteBusRecord" FunctionName="ProvidersWS_DBModel.Store.DeleteBusRecord" />
+          <FunctionImportMapping FunctionImportName="BookSeat" FunctionName="ProvidersWS_DBModel.Store.BookSeat" />
+          <FunctionImportMapping FunctionImportName="ChangeSeatType" FunctionName="ProvidersWS_DBModel.Store.ChangeSeatType" />
+          <FunctionImportMapping FunctionImportName="GetBusDetails" FunctionName="ProvidersWS_DBModel.Store.GetBusDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetBusDetails_Result">
+                <ScalarProperty Name="BusId" ColumnName="BusId" />
+                <ScalarProperty Name="BusName" ColumnName="BusName" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BusNo" ColumnName="BusNo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetBusProviderDetails" FunctionName="ProvidersWS_DBModel.Store.GetBusProviderDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetBusProviderDetails_Result">
+                <ScalarProperty Name="BusId" ColumnName="BusId" />
+                <ScalarProperty Name="BusName" ColumnName="BusName" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BusNo" ColumnName="BusNo" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="OrganisationName" ColumnName="OrganisationName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
