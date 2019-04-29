@@ -11,15 +11,15 @@ namespace BusproviderWebService
 {
     using System;
     
-    public partial class GetBusProviderDetails_Result
+    public partial class GetRouteDetails_Result
     {
+        public int RouteId { get; set; }
         public int BusId { get; set; }
-        public string BusName { get; set; }
-        public int Capacity { get; set; }
-        public string Type { get; set; }
-        public string BusNo { get; set; }
-        public int ProviderId { get; set; }
-        public string OrganisationName { get; set; }
-        public string ContactNo { get; set; }
+        public int SourceId { get; set; }
+        public int DestinationId { get; set; }
+        public System.DateTime DateOfJourney { get; set; }
+        public double Price { get; set; }
+        public System.TimeSpan ArrivalTime { get; set; }
+        public System.TimeSpan DepartureTime { get; set; }
     }
 }

@@ -17,42 +17,24 @@ namespace BusproviderWebService
     public class ProvidersWebService : System.Web.Services.WebService
     {
         ProvidersWS_DBEntities entities = new ProvidersWS_DBEntities();
-        [WebMethod]
-        public string HelloWorld()
-        {
-            return "Hello World";
-        }
+        
 
-        [WebMethod]
-        public GetProviderDetails_Result[] GetProviderDetails()
-        {
-            return entities.GetProviderDetails().ToArray();
-        }
+        
         //Insert provider details into 'ProviderDetails' table present in 'providerWS_DB' database
-        [WebMethod]
-        public void InsertIntoProvider(string name,string contact)
-        {   
-            ProviderDetail providerDetail = new ProviderDetail()
-            {   
-                OrganisationName = name,
-                ContactNo =  contact
-            };
-            entities.ProviderDetails.Add(providerDetail);
-            entities.SaveChanges();
-        }
+        
         //Below method Inserts bus details into 'BusProviderDetails' and 'BusDetails' table present in 'providerWS_DB' database
         [WebMethod]
-        public void InsertBusDetails(string busName, int capacity,string type,string busNo, int providerId)
+        public void InsertBusDetails(string busName, int capacity,string type,string busNo)
         {
-            entities.InsertBusDetails(busNo, busName, capacity, type, providerId);
+            entities.InsertBusDetails(busNo, busName, capacity, type);
           
         }
 
         [WebMethod]
-        public  Boolean DeleteBus(string busNo)
+        public  Boolean DeleteBus(int busId)
         {
             //var busId = entities.BusDetails.Where(n => n.BusNo == busNo).Select(no=> no.BusId).Single();
-            var result= entities.DeleteBusRecord(busNo);
+            var result= entities.DeleteBusRecord(busId);
             if (result>0)
             {
                 return true;
@@ -87,10 +69,46 @@ namespace BusproviderWebService
         {
             return entities.GetBusDetails().ToArray();
         }
+        
+
         [WebMethod]
-        public GetBusProviderDetails_Result[] GetBusProviderDetails()
+        public Boolean AddCityDetails(string city, string state)
         {
-            return entities.GetBusProviderDetails().ToArray();
+            var result = entities.InsertCityDetails(city,state);
+            if (result > 0)
+            {
+                return true;
+
+            }
+            return false;
+        }
+
+        [WebMethod]
+        public GetCityDetails_Result[] GetCityDetails()
+        {
+            return entities.GetCityDetails().ToArray();
+        }
+        [WebMethod]
+        public Boolean AddRouteDetails(int busId,int sourceId,int destinationId,DateTime dateOfJourney,double price,TimeSpan arrivalTime, TimeSpan departureTime)
+        {
+            var result = entities.AddRouteDetails(busId,sourceId,destinationId,dateOfJourney,price,arrivalTime,departureTime);
+            if (result > 0)
+            {
+                return true;
+
+            }
+            return false;
+        }
+
+        [WebMethod]
+        public GetRouteDetails_Result[] GetRouteDetails(int sourceId, int destinationId,DateTime dateOfJourney)
+        {
+            return entities.GetRouteDetails(sourceId,destinationId,dateOfJourney).ToArray();
+        }
+        [WebMethod]
+        public GetBookingStatus_Result[] GetBookingStatuses(int  busId)
+        {
+            return entities.GetBookingStatus(busId).ToArray();
         }
     }
  }

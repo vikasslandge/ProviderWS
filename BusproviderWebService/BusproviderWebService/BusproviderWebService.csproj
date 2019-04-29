@@ -92,19 +92,28 @@
     <Compile Include="BusDetail.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CityDetail.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeedbackDetail.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetBookingStatus_Result.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetBusDetails_Result.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="GetBusProviderDetails_Result.cs">
+    <Compile Include="GetCityDetails_Result.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="GetProviderDetails_Result.cs">
+    <Compile Include="GetRouteDetails_Result.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PassengerDetail.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderDetail.cs">
-      <DependentUpon>ProviderModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ProviderModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -124,10 +133,16 @@
       <DependentUpon>ProvidersWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RouteDetail.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SeatBookingStatu.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagram.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TicketDetail.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

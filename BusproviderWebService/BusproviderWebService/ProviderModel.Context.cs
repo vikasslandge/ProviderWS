@@ -28,16 +28,75 @@ namespace BusproviderWebService
         }
     
         public virtual DbSet<BusDetail> BusDetails { get; set; }
-        public virtual DbSet<ProviderDetail> ProviderDetails { get; set; }
+        public virtual DbSet<CityDetail> CityDetails { get; set; }
+        public virtual DbSet<FeedbackDetail> FeedbackDetails { get; set; }
+        public virtual DbSet<PassengerDetail> PassengerDetails { get; set; }
+        public virtual DbSet<RouteDetail> RouteDetails { get; set; }
         public virtual DbSet<SeatBookingStatu> SeatBookingStatus { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<TicketDetail> TicketDetails { get; set; }
     
-        public virtual ObjectResult<GetProviderDetails_Result> GetProviderDetails()
+        public virtual int AddRouteDetails(Nullable<int> busId, Nullable<int> sourceId, Nullable<int> destinationId, Nullable<System.DateTime> dateOfJourney, Nullable<double> price, Nullable<System.TimeSpan> arrivalTime, Nullable<System.TimeSpan> departureTime)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProviderDetails_Result>("GetProviderDetails");
+            var busIdParameter = busId.HasValue ?
+                new ObjectParameter("busId", busId) :
+                new ObjectParameter("busId", typeof(int));
+    
+            var sourceIdParameter = sourceId.HasValue ?
+                new ObjectParameter("sourceId", sourceId) :
+                new ObjectParameter("sourceId", typeof(int));
+    
+            var destinationIdParameter = destinationId.HasValue ?
+                new ObjectParameter("destinationId", destinationId) :
+                new ObjectParameter("destinationId", typeof(int));
+    
+            var dateOfJourneyParameter = dateOfJourney.HasValue ?
+                new ObjectParameter("dateOfJourney", dateOfJourney) :
+                new ObjectParameter("dateOfJourney", typeof(System.DateTime));
+    
+            var priceParameter = price.HasValue ?
+                new ObjectParameter("price", price) :
+                new ObjectParameter("price", typeof(double));
+    
+            var arrivalTimeParameter = arrivalTime.HasValue ?
+                new ObjectParameter("arrivalTime", arrivalTime) :
+                new ObjectParameter("arrivalTime", typeof(System.TimeSpan));
+    
+            var departureTimeParameter = departureTime.HasValue ?
+                new ObjectParameter("departureTime", departureTime) :
+                new ObjectParameter("departureTime", typeof(System.TimeSpan));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddRouteDetails", busIdParameter, sourceIdParameter, destinationIdParameter, dateOfJourneyParameter, priceParameter, arrivalTimeParameter, departureTimeParameter);
         }
     
-        public virtual int InsertBusDetails(string busNo, string busname, Nullable<int> capacity, string type, Nullable<int> providerId)
+        public virtual ObjectResult<GetBusDetails_Result> GetBusDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBusDetails_Result>("GetBusDetails");
+        }
+    
+        public virtual ObjectResult<GetCityDetails_Result> GetCityDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCityDetails_Result>("GetCityDetails");
+        }
+    
+        public virtual ObjectResult<GetRouteDetails_Result> GetRouteDetails(Nullable<int> sourceId, Nullable<int> destinationId, Nullable<System.DateTime> dateOfJourney)
+        {
+            var sourceIdParameter = sourceId.HasValue ?
+                new ObjectParameter("sourceId", sourceId) :
+                new ObjectParameter("sourceId", typeof(int));
+    
+            var destinationIdParameter = destinationId.HasValue ?
+                new ObjectParameter("destinationId", destinationId) :
+                new ObjectParameter("destinationId", typeof(int));
+    
+            var dateOfJourneyParameter = dateOfJourney.HasValue ?
+                new ObjectParameter("dateOfJourney", dateOfJourney) :
+                new ObjectParameter("dateOfJourney", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRouteDetails_Result>("GetRouteDetails", sourceIdParameter, destinationIdParameter, dateOfJourneyParameter);
+        }
+    
+        public virtual int InsertBusDetails(string busNo, string busname, Nullable<int> capacity, string type)
         {
             var busNoParameter = busNo != null ?
                 new ObjectParameter("busNo", busNo) :
@@ -55,20 +114,20 @@ namespace BusproviderWebService
                 new ObjectParameter("type", type) :
                 new ObjectParameter("type", typeof(string));
     
-            var providerIdParameter = providerId.HasValue ?
-                new ObjectParameter("providerId", providerId) :
-                new ObjectParameter("providerId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertBusDetails", busNoParameter, busnameParameter, capacityParameter, typeParameter, providerIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertBusDetails", busNoParameter, busnameParameter, capacityParameter, typeParameter);
         }
     
-        public virtual int DeleteBusRecord(string busNo)
+        public virtual int InsertCityDetails(string city, string state)
         {
-            var busNoParameter = busNo != null ?
-                new ObjectParameter("busNo", busNo) :
-                new ObjectParameter("busNo", typeof(string));
+            var cityParameter = city != null ?
+                new ObjectParameter("city", city) :
+                new ObjectParameter("city", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteBusRecord", busNoParameter);
+            var stateParameter = state != null ?
+                new ObjectParameter("state", state) :
+                new ObjectParameter("state", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertCityDetails", cityParameter, stateParameter);
         }
     
         public virtual int BookSeat(Nullable<int> seatNo, Nullable<int> busId, string status)
@@ -105,14 +164,22 @@ namespace BusproviderWebService
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeSeatType", seatNoParameter, busIdParameter, seatTypeParameter);
         }
     
-        public virtual ObjectResult<GetBusDetails_Result> GetBusDetails()
+        public virtual int DeleteBusRecord(Nullable<int> busId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBusDetails_Result>("GetBusDetails");
+            var busIdParameter = busId.HasValue ?
+                new ObjectParameter("busId", busId) :
+                new ObjectParameter("busId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteBusRecord", busIdParameter);
         }
     
-        public virtual ObjectResult<GetBusProviderDetails_Result> GetBusProviderDetails()
+        public virtual ObjectResult<GetBookingStatus_Result> GetBookingStatus(Nullable<int> busId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBusProviderDetails_Result>("GetBusProviderDetails");
+            var busIdParameter = busId.HasValue ?
+                new ObjectParameter("busId", busId) :
+                new ObjectParameter("busId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBookingStatus_Result>("GetBookingStatus", busIdParameter);
         }
     }
 }

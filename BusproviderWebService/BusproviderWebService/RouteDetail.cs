@@ -12,19 +12,27 @@ namespace BusproviderWebService
     using System;
     using System.Collections.Generic;
     
-    public partial class ProviderDetail
+    public partial class RouteDetail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ProviderDetail()
+        public RouteDetail()
         {
-            this.BusDetails = new HashSet<BusDetail>();
+            this.TicketDetails = new HashSet<TicketDetail>();
         }
     
-        public int ProviderId { get; set; }
-        public string OrganisationName { get; set; }
-        public string ContactNo { get; set; }
+        public int RouteId { get; set; }
+        public int BusId { get; set; }
+        public int SourceId { get; set; }
+        public int DestinationId { get; set; }
+        public System.DateTime DateOfJourney { get; set; }
+        public double Price { get; set; }
+        public System.TimeSpan ArrivalTime { get; set; }
+        public System.TimeSpan DepartureTime { get; set; }
     
+        public virtual BusDetail BusDetail { get; set; }
+        public virtual CityDetail CityDetail { get; set; }
+        public virtual CityDetail CityDetail1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BusDetail> BusDetails { get; set; }
+        public virtual ICollection<TicketDetail> TicketDetails { get; set; }
     }
 }

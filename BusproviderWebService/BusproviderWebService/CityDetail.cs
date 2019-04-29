@@ -12,27 +12,22 @@ namespace BusproviderWebService
     using System;
     using System.Collections.Generic;
     
-    public partial class BusDetail
+    public partial class CityDetail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BusDetail()
+        public CityDetail()
         {
-            this.FeedbackDetails = new HashSet<FeedbackDetail>();
             this.RouteDetails = new HashSet<RouteDetail>();
-            this.SeatBookingStatus = new HashSet<SeatBookingStatu>();
+            this.RouteDetails1 = new HashSet<RouteDetail>();
         }
     
-        public int BusId { get; set; }
-        public string BusName { get; set; }
-        public int Capacity { get; set; }
-        public string Type { get; set; }
-        public string BusNo { get; set; }
+        public int CityId { get; set; }
+        public string CityName { get; set; }
+        public string CityState { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FeedbackDetail> FeedbackDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RouteDetail> RouteDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SeatBookingStatu> SeatBookingStatus { get; set; }
+        public virtual ICollection<RouteDetail> RouteDetails1 { get; set; }
     }
 }

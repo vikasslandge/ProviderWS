@@ -11,10 +11,11 @@ namespace BusproviderWebService
 {
     using System;
     
-    public partial class GetProviderDetails_Result
+    public partial class GetBookingStatus_Result
     {
-        public int ProviderId { get; set; }
-        public string OrganisationName { get; set; }
-        public string ContactNo { get; set; }
+        public int BusId { get; set; }
+        public int SeatNo { get; set; }
+        public string Status { get; set; }
+        public string SeatType { get; set; }
     }
 }
