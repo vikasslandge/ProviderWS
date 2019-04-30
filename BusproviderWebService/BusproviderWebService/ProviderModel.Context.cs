@@ -79,23 +79,6 @@ namespace BusproviderWebService
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCityDetails_Result>("GetCityDetails");
         }
     
-        public virtual ObjectResult<GetRouteDetails_Result> GetRouteDetails(Nullable<int> sourceId, Nullable<int> destinationId, Nullable<System.DateTime> dateOfJourney)
-        {
-            var sourceIdParameter = sourceId.HasValue ?
-                new ObjectParameter("sourceId", sourceId) :
-                new ObjectParameter("sourceId", typeof(int));
-    
-            var destinationIdParameter = destinationId.HasValue ?
-                new ObjectParameter("destinationId", destinationId) :
-                new ObjectParameter("destinationId", typeof(int));
-    
-            var dateOfJourneyParameter = dateOfJourney.HasValue ?
-                new ObjectParameter("dateOfJourney", dateOfJourney) :
-                new ObjectParameter("dateOfJourney", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRouteDetails_Result>("GetRouteDetails", sourceIdParameter, destinationIdParameter, dateOfJourneyParameter);
-        }
-    
         public virtual int InsertBusDetails(string busNo, string busname, Nullable<int> capacity, string type)
         {
             var busNoParameter = busNo != null ?
@@ -180,6 +163,56 @@ namespace BusproviderWebService
                 new ObjectParameter("busId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBookingStatus_Result>("GetBookingStatus", busIdParameter);
+        }
+    
+        public virtual int AddRouteDetails1(Nullable<int> busId, Nullable<int> sourceId, Nullable<int> destinationId, Nullable<System.DateTime> dateOfJourney, Nullable<double> price, Nullable<System.TimeSpan> arrivalTime, Nullable<System.TimeSpan> departureTime)
+        {
+            var busIdParameter = busId.HasValue ?
+                new ObjectParameter("busId", busId) :
+                new ObjectParameter("busId", typeof(int));
+    
+            var sourceIdParameter = sourceId.HasValue ?
+                new ObjectParameter("sourceId", sourceId) :
+                new ObjectParameter("sourceId", typeof(int));
+    
+            var destinationIdParameter = destinationId.HasValue ?
+                new ObjectParameter("destinationId", destinationId) :
+                new ObjectParameter("destinationId", typeof(int));
+    
+            var dateOfJourneyParameter = dateOfJourney.HasValue ?
+                new ObjectParameter("dateOfJourney", dateOfJourney) :
+                new ObjectParameter("dateOfJourney", typeof(System.DateTime));
+    
+            var priceParameter = price.HasValue ?
+                new ObjectParameter("price", price) :
+                new ObjectParameter("price", typeof(double));
+    
+            var arrivalTimeParameter = arrivalTime.HasValue ?
+                new ObjectParameter("arrivalTime", arrivalTime) :
+                new ObjectParameter("arrivalTime", typeof(System.TimeSpan));
+    
+            var departureTimeParameter = departureTime.HasValue ?
+                new ObjectParameter("departureTime", departureTime) :
+                new ObjectParameter("departureTime", typeof(System.TimeSpan));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddRouteDetails1", busIdParameter, sourceIdParameter, destinationIdParameter, dateOfJourneyParameter, priceParameter, arrivalTimeParameter, departureTimeParameter);
+        }
+    
+        public virtual ObjectResult<GetRouteDetails_Result> GetRouteDetails(Nullable<int> sourceId, Nullable<int> destinationId, Nullable<System.DateTime> dateOfJourney)
+        {
+            var sourceIdParameter = sourceId.HasValue ?
+                new ObjectParameter("sourceId", sourceId) :
+                new ObjectParameter("sourceId", typeof(int));
+    
+            var destinationIdParameter = destinationId.HasValue ?
+                new ObjectParameter("destinationId", destinationId) :
+                new ObjectParameter("destinationId", typeof(int));
+    
+            var dateOfJourneyParameter = dateOfJourney.HasValue ?
+                new ObjectParameter("dateOfJourney", dateOfJourney) :
+                new ObjectParameter("dateOfJourney", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRouteDetails_Result>("GetRouteDetails", sourceIdParameter, destinationIdParameter, dateOfJourneyParameter);
         }
     }
 }

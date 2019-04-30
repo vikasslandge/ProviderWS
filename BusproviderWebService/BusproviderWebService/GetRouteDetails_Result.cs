@@ -10,7 +10,10 @@
 namespace BusproviderWebService
 {
     using System;
-    
+    using System.ComponentModel;
+    using System.Xml;
+    using System.Xml.Serialization;
+
     public partial class GetRouteDetails_Result
     {
         public int RouteId { get; set; }
@@ -19,7 +22,21 @@ namespace BusproviderWebService
         public int DestinationId { get; set; }
         public System.DateTime DateOfJourney { get; set; }
         public double Price { get; set; }
-        public System.TimeSpan ArrivalTime { get; set; }
-        public System.TimeSpan DepartureTime { get; set; }
+        //Orignal Property
+        [XmlIgnore]//this attribute prevents the property from being serializer
+        public System.TimeSpan ArrivalTime { get {return XmlConvert.ToTimeSpan(ArrivalTime_String) ; } set {ArrivalTime_String=XmlConvert.ToString(value) ; } }
+        //subsitute property
+        [Browsable(false)]//Hides the property from propertygrid
+        [XmlElement("ArrivalTime")]
+        public string ArrivalTime_String { get; set; }
+        [XmlIgnore]
+        public System.TimeSpan DepartureTime { get { return XmlConvert.ToTimeSpan(Departure_Time); } set { Departure_Time = XmlConvert.ToString(value); } }
+        [Browsable(false)]//Hides the property from propertygrid
+        [XmlElement("DepartureTime")]
+        public string Departure_Time { get; set; }
+        public string BusName { get; set; }
+        public string Type { get; set; }
+        public string BusNo { get; set; }
+        public Nullable<int> AvailableSeats { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using System.Runtime.Serialization.Json;
 
 namespace BusproviderWebService
 {
@@ -103,12 +104,30 @@ namespace BusproviderWebService
         [WebMethod]
         public GetRouteDetails_Result[] GetRouteDetails(int sourceId, int destinationId,DateTime dateOfJourney)
         {
-            return entities.GetRouteDetails(sourceId,destinationId,dateOfJourney).ToArray();
+            var result = entities.GetRouteDetails(sourceId, destinationId, dateOfJourney) ;
+
+
+
+            return result.ToArray();
+                
         }
         [WebMethod]
         public GetBookingStatus_Result[] GetBookingStatuses(int  busId)
         {
+
             return entities.GetBookingStatus(busId).ToArray();
+        }
+
+        [WebMethod]
+        public Boolean BookTicket(int busId, int sourceId, int destinationId, DateTime dateOfJourney, double price, TimeSpan arrivalTime, TimeSpan departureTime)
+        {
+            var result = entities.AddRouteDetails(busId, sourceId, destinationId, dateOfJourney, price, arrivalTime, departureTime);
+            if (result > 0)
+            {
+                return true;
+
+            }
+            return false;
         }
     }
  }

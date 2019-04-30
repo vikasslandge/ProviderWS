@@ -515,11 +515,6 @@
           </FunctionImport>
           <FunctionImport Name="GetBusDetails" ReturnType="Collection(ProvidersWS_DBModel.GetBusDetails_Result)" />
           <FunctionImport Name="GetCityDetails" ReturnType="Collection(ProvidersWS_DBModel.GetCityDetails_Result)" />
-          <FunctionImport Name="GetRouteDetails" ReturnType="Collection(ProvidersWS_DBModel.GetRouteDetails_Result)">
-            <Parameter Name="sourceId" Mode="In" Type="Int32" />
-            <Parameter Name="destinationId" Mode="In" Type="Int32" />
-            <Parameter Name="dateOfJourney" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <FunctionImport Name="InsertBusDetails">
             <Parameter Name="busNo" Mode="In" Type="String" />
             <Parameter Name="busname" Mode="In" Type="String" />
@@ -544,7 +539,21 @@
           <Parameter Name="busId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetBookingStatus" ReturnType="Collection(ProvidersWS_DBModel.GetBookingStatus_Result)">
+          <Parameter Name="busId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddRouteDetails1">
             <Parameter Name="busId" Mode="In" Type="Int32" />
+            <Parameter Name="sourceId" Mode="In" Type="Int32" />
+            <Parameter Name="destinationId" Mode="In" Type="Int32" />
+            <Parameter Name="dateOfJourney" Mode="In" Type="DateTime" />
+            <Parameter Name="price" Mode="In" Type="Double" />
+            <Parameter Name="arrivalTime" Mode="In" Type="Time" />
+            <Parameter Name="departureTime" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="GetRouteDetails" ReturnType="Collection(ProvidersWS_DBModel.GetRouteDetails_Result)">
+            <Parameter Name="sourceId" Mode="In" Type="Int32" />
+            <Parameter Name="destinationId" Mode="In" Type="Int32" />
+            <Parameter Name="dateOfJourney" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetBusDetails_Result">
@@ -559,6 +568,12 @@
           <Property Type="String" Name="CityName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="CityState" Nullable="false" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="GetBookingStatus_Result">
+          <Property Type="Int32" Name="BusId" Nullable="false" />
+          <Property Type="Int32" Name="SeatNo" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="SeatType" Nullable="false" MaxLength="50" />
+        </ComplexType>
         <ComplexType Name="GetRouteDetails_Result">
           <Property Type="Int32" Name="RouteId" Nullable="false" />
           <Property Type="Int32" Name="BusId" Nullable="false" />
@@ -568,12 +583,10 @@
           <Property Type="Double" Name="Price" Nullable="false" />
           <Property Type="Time" Name="ArrivalTime" Nullable="false" />
           <Property Type="Time" Name="DepartureTime" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GetBookingStatus_Result">
-          <Property Type="Int32" Name="BusId" Nullable="false" />
-          <Property Type="Int32" Name="SeatNo" Nullable="false" />
-          <Property Type="String" Name="Status" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="SeatType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="BusName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="BusNo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="AvailableSeats" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -669,7 +682,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AddRouteDetails" FunctionName="ProvidersWS_DBModel.Store.AddRouteDetails" />
           <FunctionImportMapping FunctionImportName="GetBusDetails" FunctionName="ProvidersWS_DBModel.Store.GetBusDetails">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetBusDetails_Result">
@@ -690,20 +702,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetRouteDetails" FunctionName="ProvidersWS_DBModel.Store.GetRouteDetails">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetRouteDetails_Result">
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="BusId" ColumnName="BusId" />
-                <ScalarProperty Name="SourceId" ColumnName="SourceId" />
-                <ScalarProperty Name="DestinationId" ColumnName="DestinationId" />
-                <ScalarProperty Name="DateOfJourney" ColumnName="DateOfJourney" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
-                <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="InsertBusDetails" FunctionName="ProvidersWS_DBModel.Store.InsertBusDetails" />
           <FunctionImportMapping FunctionImportName="InsertCityDetails" FunctionName="ProvidersWS_DBModel.Store.InsertCityDetails" />
           <FunctionImportMapping FunctionImportName="BookSeat" FunctionName="ProvidersWS_DBModel.Store.BookSeat" />
@@ -716,6 +714,25 @@
                 <ScalarProperty Name="SeatNo" ColumnName="SeatNo" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="SeatType" ColumnName="SeatType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AddRouteDetails1" FunctionName="ProvidersWS_DBModel.Store.AddRouteDetails" />
+          <FunctionImportMapping FunctionImportName="GetRouteDetails" FunctionName="ProvidersWS_DBModel.Store.GetRouteDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetRouteDetails_Result">
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="BusId" ColumnName="BusId" />
+                <ScalarProperty Name="SourceId" ColumnName="SourceId" />
+                <ScalarProperty Name="DestinationId" ColumnName="DestinationId" />
+                <ScalarProperty Name="DateOfJourney" ColumnName="DateOfJourney" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
+                <ScalarProperty Name="BusName" ColumnName="BusName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BusNo" ColumnName="BusNo" />
+                <ScalarProperty Name="AvailableSeats" ColumnName="AvailableSeats" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
