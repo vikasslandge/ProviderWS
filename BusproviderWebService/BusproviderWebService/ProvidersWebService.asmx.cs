@@ -119,10 +119,58 @@ namespace BusproviderWebService
         }
 
         [WebMethod]
-        public Boolean BookTicket(int busId, int sourceId, int destinationId, DateTime dateOfJourney, double price, TimeSpan arrivalTime, TimeSpan departureTime)
-        {
-            var result = entities.AddRouteDetails(busId, sourceId, destinationId, dateOfJourney, price, arrivalTime, departureTime);
+        public Boolean BookTicket(int seatNo ,int busId )
+        { 
+                var result = entities.BookSeat(seatNo, busId, "Book");
+              
+         
             if (result > 0)
+            {
+                return true;
+
+            }
+            return false;
+        }
+        [WebMethod]
+        public Boolean AddTicketDetails(int routeId, int totalNumberOfSeats)
+        {
+
+
+            TicketDetail ticketDetail = new TicketDetail()
+            {
+                RouteId = routeId,
+                TotalSelectedSeats = totalNumberOfSeats,
+                Amount = totalNumberOfSeats * (entities.RouteDetails.Where(id => id.RouteId == routeId).Select(p => p.Price).Single())
+            };
+
+             
+
+            var result2 = entities.TicketDetails.Add(ticketDetail);
+
+            entities.SaveChanges();
+            if (result2 != null)
+            {
+                return true;
+
+            }
+            return false;
+        }
+
+        [WebMethod]
+        public Boolean AddPassanger(string name,int age, string gender,string number,int ticketId,int seatNo )
+        {
+            PassengerDetail passenger = new PassengerDetail()
+            {
+                Name = name,
+                Age=age,
+                Gender=gender,
+                Phone=number,
+                TicketId=ticketId,
+                SeatNo=seatNo
+            };
+            entities.PassengerDetails.Add(passenger);
+            var result = entities.SaveChanges();
+            if (result> 0)
             {
                 return true;
 
