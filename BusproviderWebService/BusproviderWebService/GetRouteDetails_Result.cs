@@ -24,7 +24,7 @@ namespace BusproviderWebService
         public double Price { get; set; }
         //Orignal Property
         [XmlIgnore]//this attribute prevents the property from being serializer
-        public System.TimeSpan ArrivalTime { get {return XmlConvert.ToTimeSpan(ArrivalTime_String) ; } set {ArrivalTime_String=XmlConvert.ToString(value) ; } }
+        public System.TimeSpan ArrivalTime { get { return XmlConvert.ToTimeSpan(ArrivalTime_String); } set { ArrivalTime_String = XmlConvert.ToString(value); } }
         //subsitute property
         [Browsable(false)]//Hides the property from propertygrid
         [XmlElement("ArrivalTime")]

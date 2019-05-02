@@ -214,5 +214,14 @@ namespace BusproviderWebService
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRouteDetails_Result>("GetRouteDetails", sourceIdParameter, destinationIdParameter, dateOfJourneyParameter);
         }
+    
+        public virtual ObjectResult<GetPassangerDetails_Result> GetPassangerDetails(Nullable<int> ticketId)
+        {
+            var ticketIdParameter = ticketId.HasValue ?
+                new ObjectParameter("ticketId", ticketId) :
+                new ObjectParameter("ticketId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPassangerDetails_Result>("GetPassangerDetails", ticketIdParameter);
+        }
     }
 }

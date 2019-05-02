@@ -209,6 +209,9 @@
         </Function>
         <Function Name="GetBusDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetCityDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetPassangerDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ticketId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetRouteDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="sourceId" Type="int" Mode="In" />
           <Parameter Name="destinationId" Type="int" Mode="In" />
@@ -555,6 +558,9 @@
             <Parameter Name="destinationId" Mode="In" Type="Int32" />
             <Parameter Name="dateOfJourney" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="GetPassangerDetails" ReturnType="Collection(ProvidersWS_DBModel.GetPassangerDetails_Result)">
+            <Parameter Name="ticketId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetBusDetails_Result">
           <Property Type="Int32" Name="BusId" Nullable="false" />
@@ -587,6 +593,15 @@
           <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="BusNo" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="AvailableSeats" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetPassangerDetails_Result">
+          <Property Type="Int32" Name="PassengerId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Age" Nullable="false" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="TicketId" Nullable="false" />
+          <Property Type="Int32" Name="SeatNo" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -733,6 +748,19 @@
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="BusNo" ColumnName="BusNo" />
                 <ScalarProperty Name="AvailableSeats" ColumnName="AvailableSeats" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPassangerDetails" FunctionName="ProvidersWS_DBModel.Store.GetPassangerDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProvidersWS_DBModel.GetPassangerDetails_Result">
+                <ScalarProperty Name="PassengerId" ColumnName="PassengerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="SeatNo" ColumnName="SeatNo" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -107,6 +107,9 @@
     <Compile Include="GetCityDetails_Result.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetPassangerDetails_Result.cs">
+      <DependentUpon>ProviderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetRouteDetails_Result.cs">
       <DependentUpon>ProviderModel.tt</DependentUpon>
     </Compile>

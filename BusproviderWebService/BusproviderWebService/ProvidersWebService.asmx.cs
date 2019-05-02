@@ -148,6 +148,7 @@ namespace BusproviderWebService
             var result2 = entities.TicketDetails.Add(ticketDetail);
 
             entities.SaveChanges();
+             
             if (result2 != null)
             {
                 return true;
@@ -157,15 +158,15 @@ namespace BusproviderWebService
         }
 
         [WebMethod]
-        public Boolean AddPassanger(string name,int age, string gender,string number,int ticketId,int seatNo )
+        public Boolean AddPassanger(string name,int age, string gender,string number,int seatNo )
         {
             PassengerDetail passenger = new PassengerDetail()
             {
                 Name = name,
-                Age=age,
-                Gender=gender,
-                Phone=number,
-                TicketId=ticketId,
+                Age = age,
+                Gender = gender,
+                Phone = number,
+                TicketId = entities.TicketDetails.Max(i => i.TicketId),
                 SeatNo=seatNo
             };
             entities.PassengerDetails.Add(passenger);
@@ -176,6 +177,11 @@ namespace BusproviderWebService
 
             }
             return false;
+        }
+        [WebMethod]
+        public GetPassangerDetails_Result[] GetPassengerDetails(int ticketId)
+        {
+            return entities.GetPassangerDetails(ticketId).ToArray();
         }
     }
  }
