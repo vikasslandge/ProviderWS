@@ -198,6 +198,15 @@ namespace BusproviderWebService
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddRouteDetails1", busIdParameter, sourceIdParameter, destinationIdParameter, dateOfJourneyParameter, priceParameter, arrivalTimeParameter, departureTimeParameter);
         }
     
+        public virtual ObjectResult<GetPassangerDetails_Result> GetPassangerDetails(Nullable<int> ticketId)
+        {
+            var ticketIdParameter = ticketId.HasValue ?
+                new ObjectParameter("ticketId", ticketId) :
+                new ObjectParameter("ticketId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPassangerDetails_Result>("GetPassangerDetails", ticketIdParameter);
+        }
+    
         public virtual ObjectResult<GetRouteDetails_Result> GetRouteDetails(Nullable<int> sourceId, Nullable<int> destinationId, Nullable<System.DateTime> dateOfJourney)
         {
             var sourceIdParameter = sourceId.HasValue ?
@@ -213,15 +222,6 @@ namespace BusproviderWebService
                 new ObjectParameter("dateOfJourney", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRouteDetails_Result>("GetRouteDetails", sourceIdParameter, destinationIdParameter, dateOfJourneyParameter);
-        }
-    
-        public virtual ObjectResult<GetPassangerDetails_Result> GetPassangerDetails(Nullable<int> ticketId)
-        {
-            var ticketIdParameter = ticketId.HasValue ?
-                new ObjectParameter("ticketId", ticketId) :
-                new ObjectParameter("ticketId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPassangerDetails_Result>("GetPassangerDetails", ticketIdParameter);
         }
     }
 }

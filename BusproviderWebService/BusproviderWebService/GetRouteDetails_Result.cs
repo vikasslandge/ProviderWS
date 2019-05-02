@@ -20,23 +20,38 @@ namespace BusproviderWebService
         public int BusId { get; set; }
         public int SourceId { get; set; }
         public int DestinationId { get; set; }
-        public System.DateTime DateOfJourney { get; set; }
+        
+        [XmlIgnore]
+        public System.DateTime DateOfJourney { get { return XmlConvert.ToDateTime(DateOfJourney_String, "yyyy-MM-dd"); } set { DateOfJourney_String = XmlConvert.ToString(value,"yyyy-MM-dd"); } }
+        [Browsable(false)]//Hides the property from propertygrid
+        [XmlElement("DateOfJourney")]
+        public string DateOfJourney_String { get; set; }
         public double Price { get; set; }
         //Orignal Property
         [XmlIgnore]//this attribute prevents the property from being serializer
-        public System.TimeSpan ArrivalTime { get { return XmlConvert.ToTimeSpan(ArrivalTime_String); } set { ArrivalTime_String = XmlConvert.ToString(value); } }
+        public System.TimeSpan ArrivalTime { get { return XmlConvert.ToTimeSpan(ArrivalTime_String); }
+            set {
+                TimeSpan timespan = new TimeSpan(value.Ticks);
+                DateTime time = DateTime.Today.Add(timespan);
+               // string displayTime = time.ToString("hh:mm tt");
+                ArrivalTime_String = XmlConvert.ToString(time, "hh:mm tt"); } }
         //subsitute property
         [Browsable(false)]//Hides the property from propertygrid
         [XmlElement("ArrivalTime")]
         public string ArrivalTime_String { get; set; }
         [XmlIgnore]
-        public System.TimeSpan DepartureTime { get { return XmlConvert.ToTimeSpan(Departure_Time); } set { Departure_Time = XmlConvert.ToString(value); } }
+        public System.TimeSpan DepartureTime { get { return XmlConvert.ToTimeSpan(Departure_Time); }
+            set {
+                TimeSpan timespan = new TimeSpan(value.Ticks);
+                DateTime time = DateTime.Today.Add(timespan);
+                Departure_Time = XmlConvert.ToString(time, "hh:mm tt"); } }
         [Browsable(false)]//Hides the property from propertygrid
         [XmlElement("DepartureTime")]
         public string Departure_Time { get; set; }
         public string BusName { get; set; }
         public string Type { get; set; }
         public string BusNo { get; set; }
+        public Nullable<int> Rating { get; set; }
         public Nullable<int> AvailableSeats { get; set; }
     }
 }
